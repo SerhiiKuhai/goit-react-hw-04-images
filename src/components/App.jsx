@@ -24,7 +24,7 @@ export function App() {
     if ((prevQuery => prevQuery !== query) || (prevPage => prevPage !== page)) {
       getImages(query, page);
     }
-  }, [query, page]);
+  });
 
   const getImages = (querySearchbar, page) => {
     setIsLoading(true);
