@@ -1,6 +1,6 @@
 const BASE_URL = `https://pixabay.com/api/`;
 const KEY = '35734098-001978243a4da1dc94d78ecd1';
-const perPage = 12;
+export const perPage = 12;
 
 export async function getImagesServise(query, page) {
   const response = await fetch(

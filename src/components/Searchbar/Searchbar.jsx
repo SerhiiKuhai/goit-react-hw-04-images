@@ -11,7 +11,7 @@ export function Searchbar({ onSubmit }) {
 
   const formSubmit = e => {
     e.preventDefault();
-    if (querySearchbar.trim() === '') {
+    if (querySearchbar === '') {
       toast.error('Enter a keyword');
       return;
     }

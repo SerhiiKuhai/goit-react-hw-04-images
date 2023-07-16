@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { getImagesServise } from 'service/getImageServise';
+import { getImagesServise, perPage } from 'service/getImageServise';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { Loader } from 'components/Loader/Loader';
 import { Button } from 'components/Button/Button';
 import { Modal } from 'components/Modal/Modal';
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { Container } from 'components/App.styled';
 
@@ -30,21 +32,31 @@ export function App() {
     if (query === ' ') {
       return;
     }
+
+    const getImages = async () => {
+      try {
+        setIsLoading(true);
+
+        const data = await getImagesServise(query, page);
+        const { totalHits: total, hits: hitsImage } = data;
+        if (hitsImage.length === 0) {
+          toast.error("Not found");
+          return;
+        }
+
+        setImages(prevImages => [...prevImages, ...hitsImage]);
+        setIsShowButton(page < Math.ceil(total / perPage));
+      } catch (error) {
+        toast.error("A download error occurred");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     if ((prevQuery => prevQuery !== query) || (prevPage => prevPage !== page)) {
       getImages(query, page);
     }
   }, [query, page]);
-
-  const getImages = (query, page) => {
-    setIsLoading(true);
-    getImagesServise(query, page)
-      .then(({ totalHits, hits }) => {
-        setImages(prevImages => [...prevImages, ...hits]);
-        setIsShowButton(page < Math.ceil(totalHits / images.length));
-      })
-      .catch(error => error)
-      .finally(() => setIsLoading(false));
-  };
 
   const handleClickButton = () => {
     setPage(prevPage => prevPage + 1);
@@ -71,6 +83,7 @@ export function App() {
       {isLoading && <Loader />}
 
       {isShowButton && <Button onClickButton={handleClickButton} />}
+      <ToastContainer autoClose={3000} theme="colored" />
     </Container>
   );
 }
