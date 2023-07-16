@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LiGllery } from 'components/ImageGalleryItem/ImageGalleryItem.styled';
 
-export function ImageGalleryItem({ id, showModal, smallImg, alt }) {
+export function ImageGalleryItem({ showModal, smallImg, alt }) {
   return (
-    <LiGllery key={id} onClick={showModal}>
+    <LiGllery onClick={showModal}>
       <img src={smallImg} alt={alt} />
     </LiGllery>
   );
@@ -12,7 +12,5 @@ export function ImageGalleryItem({ id, showModal, smallImg, alt }) {
 
 ImageGalleryItem.propTypes = {
   smallImg: PropTypes.string.isRequired,
-  id: PropTypes.string,
   alt: PropTypes.string,
-  // showModal: PropTypes.func.isRequired,
 };

@@ -6,6 +6,6 @@ export async function getImagesServise(query, page) {
   const response = await fetch(
     `${BASE_URL}?q=${query}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=${perPage}`
   );
-  const data = response.json();
+  const data = await response.json();
   return data;
 }
